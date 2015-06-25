@@ -1,0 +1,197 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="0" />
+    <experiment length="600"
+                ticks_per_second="10"
+                random_seed="1" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+    <footbot_central_controller id="fcentral"
+      library="controllers/footbot_central/libfootbot_central_controller.so" >
+      <actuators>
+	<footbot_wheels implementation="default" />
+	<footbot_leds   implementation="default" />
+	<footbot_beacon   implementation="default" />
+	<!--<wifi implementation="default" />-->
+      </actuators>
+      <sensors>
+	<footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+	<!--<wifi implementation="default" />-->
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="0">
+      </parameters>
+    </footbot_central_controller>
+
+    <footbot_lql_collector id="fdc" 
+      library="controllers/footbot_lql_collector/libfootbot_lql_collector.so">
+      <actuators>
+	<footbot_wheels implementation="default" />
+	<wifi implementation="extern" />
+	<footbot_leds   implementation="default" />
+	<footbot_beacon   implementation="default" />
+      </actuators>
+
+      <sensors>
+	<footbot_proximity implementation="rot_z_only" show_rays="true" calibrate="true" />
+	<footbot_encoder implementation="default"/>
+
+	<wifi implementation="default" />
+      </sensors>
+
+      <parameters Random_Seed="98765" alpha="7.5" delta="0.001" velocity="10" interval="10" generators="0.4">
+	<comm trafficGenType="TRAFFIC_NONE" />
+	<ledcontrol mode="NONE" fixedColor="blue"/>
+	<beaconcontrol mode="MOBILITY_LETTER_DEMO" fixedColor="blue"/>
+
+	<optimalSpeed>0.2</optimalSpeed>
+	<safetyMargin>0.05</safetyMargin>
+	<socialMargin>0.1</socialMargin>
+	<resolution>201</resolution>
+	<horizon>5</horizon>
+	<timeHorizon>5.0</timeHorizon>
+	<aperture>3.2</aperture>
+	<tau>0.125</tau>
+	<eta>0.5</eta>
+	<local_navigation type="HL" NH="true"/>
+	<rotationTau>0.5</rotationTau>
+	<experiment name="Demo" duration="3000000" log="false"/>					
+	<mySensors>
+	  <!--><footbot_front_camera implementation="default" low_level_config="/home/root/jerome/camera_config.xml" show_rays="false"/><-->
+	</mySensors>
+	<debug>
+	  <camera active="false"/>
+	  <console active="false"/>
+	  <mode active="false"/>
+	  <udp active="false" address="10.0.0.2"/>
+	</debug>
+	<path order='asc' dist='0.05'></path>
+	<active_sensors gyroscope="false" rab="false" proximity="false" ground="false" distance_scanner="false"/>
+	<mobility rotation_max_speed='0.1' continuous='false'/>
+	<rab min_particle_separation="0.4" particle_age="5.0" min_particle_confidence="0.1"/>
+	<!-- Min distance from the current position to the target position to determine it this is reached (meters)-->
+	<targetMinPointDistance>0.12</targetMinPointDistance>
+	<!-- Area bounds -->
+	<originAreaX>-10.0</originAreaX>
+	<originAreaY>-10.0</originAreaY>
+	<destinationAreaX>10.0</destinationAreaX>
+	<destinationAreaY>10.0</destinationAreaY>
+      </parameters>
+
+      <!--</footbot_central_controller>-->
+  </footbot_lql_collector>
+
+  </controllers>
+
+
+
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="10, 10, 1">
+
+   <box id="wall_north"
+	 position="0,10,0"
+	 orientation="0,0,0"
+	 size="20,0.1,0.5"
+	 movable="false" />
+    <box id="wall_south"
+	 position="0,-10,0"
+	 orientation="0,0,0"
+	 size="20,0.1,0.5"
+	 movable="false" />
+    <box id="wall_east"
+	 position="10,0,0"
+	 orientation="0,0,0"
+	 size="0.1,20,0.5"
+	 movable="false" />
+    <box id="wall_west"
+	 position="-10,0,0"
+	 orientation="0,0,0"
+	 size="0.1,20,0.5"
+	 movable="false" />
+
+    <!--
+        You can distribute entities randomly. Here, we distribute
+        the entities in this way:
+        - the position is uniformly distributed
+        on the ground, in the square whose corners are (-1,-1) and (1,1)
+        - the orientations are non-zero only when rotating around Z and chosen
+        from a gaussian distribution, whose mean is zero degrees and
+        standard deviation is 360 degrees.
+    -->
+
+	<!-- all robots, except 0, are sensors,
+	sensors move slowly and generate data
+	-->
+    <foot-bot id="fb_0"
+	      position="-3,-3,0"
+	      orientation="1,1,0"
+	      wifi_enabled="false"
+	      controller="fcentral" />
+	    <foot-bot id="fb_1" position="0.81,5.08,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_2" position="4.58,1.53,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_3" position="2.97,2.70,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_4" position="3.91,4.73,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_5" position="0.56,0.17,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_6" position="5.01,2.60,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_7" position="4.57,0.01,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_8" position="2.67,4.33,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_9" position="1.37,5.67,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_10" position="5.41,0.18,0" orientation="1,1,0" controller="fdc" />
+	    <foot-bot id="fb_11" position="0.15,3.25,0" orientation="1,1,0" controller="fdc" />
+
+   <wifi-medium id="wm" number_of_nodes="11" />
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ************************************ -->
+  <!-- * Arena -> Physics Engines mapping * -->
+  <!-- ************************************ -->
+  <arena_physics>
+    <engine id="dyn2d">
+      <!--
+          You can use a regular expression to bind a set of entities.
+          See 'man 3 regex' to know more about regular expressions.
+      -->
+      <entity id="fb_[[:digit:]]*" />
+      <entity id="wall_north" />
+      <entity id="wall_south" />
+      <entity id="wall_east" />
+      <entity id="wall_west" />
+    </engine>
+  </arena_physics>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+
+    <qtopengl_render splash="false">
+	<camera>
+		<placement idx="0" position="0,0,1" look_at="0,0,0" />
+		<placement idx="1" position="5,0,1" look_at="5,0,0" />
+		<placement idx="2" position="0,5,1" look_at="0,5,0" />
+		<placement idx="3" position="5,5,1" look_at="5,5,0" />
+	</camera>
+    </qtopengl_render>  
+  </visualization>
+
+
+</argos-configuration>
+

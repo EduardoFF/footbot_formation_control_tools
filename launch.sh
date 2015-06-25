@@ -40,7 +40,7 @@ export CTIME
 CLICKLOGFILE="/home/root/eduardo/logs/${CTIME}_click.log"
 export CLICKLOGFILE
 DO_WIFI=false
-DO_SYNC=true
+DO_SYNC=false
 DO_CONTROLLER=true
 DO_LOG_CONTROLLER=false
 DO_CLICK=false
