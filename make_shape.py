@@ -47,6 +47,10 @@ def print_help_shapes(shape=None):
 
 """
 make a square with a given number of robots and specified lattice
+
+3 -- 4
+|    |
+1 -- 2
 """
 def make_square(n_robots, side_len):
     if n_robots % 4 :
@@ -82,7 +86,7 @@ def make_triangle(n_robots, side_len):
     if n_robots % 3 :
         print "Error: number of robots should be multiple of 3"
         print_help_shapes('triangle')
-    points = [(0,0),(0,1),(0.5, math.atan(math.pi/3.0))]
+    points = [(0,0),(1,0),(0.5, math.atan(math.pi/3.0))]
 
     m = (n_robots - 3)/3
     offset = 1.0/(m+1)
