@@ -25,7 +25,7 @@ class timestamped_waypoint_t(object):
 
     def _encode_one(self, buf):
         buf.write(struct.pack(">q", self.timestamp))
-        buf.write(struct.pack('>3h', *self.position[:3]))
+        buf.write(struct.pack('>3i', *self.position[:3]))
         buf.write(struct.pack('>4h', *self.orientation[:4]))
 
     def decode(data):
@@ -41,7 +41,7 @@ class timestamped_waypoint_t(object):
     def _decode_one(buf):
         self = timestamped_waypoint_t()
         self.timestamp = struct.unpack(">q", buf.read(8))[0]
-        self.position = struct.unpack('>3h', buf.read(6))
+        self.position = struct.unpack('>3i', buf.read(12))
         self.orientation = struct.unpack('>4h', buf.read(8))
         return self
     _decode_one = staticmethod(_decode_one)
@@ -49,7 +49,7 @@ class timestamped_waypoint_t(object):
     _hash = None
     def _get_hash_recursive(parents):
         if timestamped_waypoint_t in parents: return 0
-        tmphash = (0x684cc1e1980915b5) & 0xffffffffffffffff
+        tmphash = (0x786cc1e1980915b5) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
