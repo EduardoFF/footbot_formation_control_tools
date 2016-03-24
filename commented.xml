@@ -1,0 +1,147 @@
+<ahss-config>
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+    <lqlcollect id="lqlcollect"
+      library="build/controllers/footbot_mars_controller/footbot_mars_controller.so">
+      <actuators>
+	<footbot_wheels implementation="default" />
+	<footbot_leds   implementation="default" />
+	<footbot_beacon/>
+      </actuators>
+      <sensors>
+      </sensors>
+      <!--
+	  @boris: these are the parameters of the controller
+	  things that are uncommented should stay as is
+      -->
+      <parameters Random_Seed="12345"
+		  alpha="7.5"
+		  delta="0.001"
+		  velocity="10"
+		  interval="10"
+		  generators="0.4" >
+	<lcm track="TRACK" />
+	<comm trafficGenType="TRAFFIC_NONE"   />
+	<!-- ledcontrol
+	    @boris: here you can control the leds (if the robot has leds)
+	    mode:
+	    "NONE" off
+	    "FIXED" fixed color, specified by fixedColor parameter
+	    fixedColor:
+	    named colors in this list
+	    "black"
+            "white"
+            "red"
+            "green"
+            "blue"
+            "magenta"
+            "cyan"
+            "yellow"
+            "orange"
+            "gray10"
+            "gray20"
+            "gray30"
+            "gray40"
+            "gray50"
+            "gray60"
+            "gray70"
+	    "gray80"
+	    "gray90"	    
+	-->
+	<ledcontrol mode="NONE" fixedColor="blue"/>
+
+	<!--
+	    beaconcontrol @boris: here you control the beacon (top)
+	    mode:
+	    "NONE"
+	    "RANDOM" random sequence
+	    "FIXED" same as for leds
+	    fixedColor ....
+	-->
+	    
+	<beaconcontrol mode="RANDOM" />
+	
+	<mobilitycontrol mode="LCM_POP" />
+	<taskcontrol enabled="false" />
+	<!--
+	    speedcontrol @boris: here you control the speed in m/s max 0.3 m/s
+	    mode:
+	    "DEFAULT" fixed by param optimalSpeed
+	    "RANDOM" random uniform in [speedRandomLow,speedRandomHigh]
+	    "FIXED" same as for leds
+	    fixedColor ....
+	-->
+	
+	<speedcontrol mode="DEFAULT" speedRandomLow="0.06" speedRandomHigh="0.15" />
+
+	<!--
+	    @boris: these are the parameters for jerome's nav lib
+	    I'd leave them like this
+	    just set the optimal speed to the desired speed (if speedcontrol is DEFAULT)
+	    targetMinPoint distance is the threshold
+	-->
+	
+	<optimalSpeed>0.10</optimalSpeed>
+	<safetyMargin>0.08</safetyMargin>
+	<socialMargin>0.0</socialMargin>
+	<resolution>201</resolution>
+	<!-- 5 sec at full speed in meters
+	-->
+	<horizon>2</horizon>
+	<!--
+	    only rvo
+	-->
+	<timeHorizon>5.0</timeHorizon>
+	<!--
+	-->
+	<aperture>3.2</aperture>
+	<!--
+	    for filtering speed
+	-->
+	<tau>0.125</tau>
+	<!--
+	    
+	-->
+	<eta>0.5</eta>
+	<local_navigation type="HL" NH="true"/>
+	<rotationTau>0.5</rotationTau>
+
+	<experiment name="Demo" duration="3000000" log="false"/>					
+	<mySensors>
+	  <!--><footbot_front_camera implementation="default" low_level_config="/home/root/jerome/camera_config.xml" show_rays="false"/><-->
+	</mySensors>
+	<debug>
+	  <camera active="false"/>
+	  <console active="false"/>
+	  <mode active="false"/>
+	  <udp active="false" address="10.0.0.2"/>
+	</debug>
+	<path order='asc' dist='0.05'></path>
+	<active_sensors gyroscope="false" rab="false" proximity="false" ground="false" distance_scanner="false"/>
+	<mobility rotation_max_speed='0.1' continuous='false'/>
+	<led_debugging leds="true" beacon="true" beacon_intensity="10"/>
+	<rab min_particle_separation="0.4" particle_age="5.0" min_particle_confidence="0.1"/>
+	<!-- Min distance from the current position to the target position to determine it this is reached (meters)-->
+	<targetMinPointDistance>0.20</targetMinPointDistance>
+	<!-- Area bounds -->
+
+	<!-- important! is wp is outside area it is discarded
+	     robot wont be able to go outside this area
+	     you specify the lower-left (origin)
+	     and upper-right (destination) corner
+	    I didn't name them btw.
+	-->
+	<originAreaX>-4</originAreaX>
+	<originAreaY>-4</originAreaY>
+	<destinationAreaX>4</destinationAreaX>
+	<destinationAreaY>4</destinationAreaY>
+      </parameters>
+
+    </lqlcollect>
+
+  </controllers>
+
+
+</ahss-config>
